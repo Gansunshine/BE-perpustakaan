@@ -42,29 +42,25 @@ class BookController extends Controller
             'category_id' => 'required|uuid',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         // Jika file gambar diinput
         if ($request->hasFile('image')) {
-            // Membuat nama unik pada gambar yang diinput
-            $imageName = time() . '.' . $request->image->extension();
-
-            // Simpan gambar pada file storage
-            $request->image->storeAs('public/images', $imageName);
-
-            // Mengganti nilai request image menjadi $imageName yang baru
-            $path = env('APP_URL') . '/storage/images/';
-            $validatedData['image'] = $path . $imageName;
+            // Unggah gambar ke Cloudinary
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+    
+            // Mengganti nilai request image menjadi URL Cloudinary yang baru
+            $validatedData['image'] = $uploadedFileUrl;
         }
-
+    
         // Buat buku baru
         $book = Book::create($validatedData);
-
+    
         // Kembalikan respon JSON
         return response()->json([
             'message' => 'Book created successfully',
             'book' => $book,
         ], 201);
-    }
+    }    
 
     /**
      * Display the specified resource.
@@ -91,37 +87,31 @@ class BookController extends Controller
             'category_id' => 'sometimes|required|uuid|exists:categories,id',
             'image' => 'sometimes|required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
+    
         $book = Book::findOrFail($id);
-
+    
         // Jika file gambar diinput
         if ($request->hasFile('image')) {
-            // Hapus gambar lama
-            if ($book->image) {
-                $oldImage = str_replace(env('APP_URL') . '/storage/images/', '', $book->image);
-                Storage::disk('public')->delete('images/' . $oldImage);
-            }
-
-            // Membuat nama unik pada gambar yang diinput
-            $imageName = time() . '.' . $request->image->extension();
-
-            // Simpan gambar pada file storage
-            $request->image->storeAs('public/images', $imageName);
-
-            // Mengganti nilai request image menjadi $imageName yang baru
-            $path = env('APP_URL') . '/storage/images/';
-            $validatedData['image'] = $path . $imageName;
+            // Hapus gambar lama dari Cloudinary jika perlu
+            // Misal, Anda perlu menyimpan public_id saat mengunggah untuk menghapusnya
+            Cloudinary::destroy($book->cloudinary_public_id);
+    
+            // Unggah gambar baru ke Cloudinary
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+    
+            // Mengganti nilai request image menjadi URL Cloudinary yang baru
+            $validatedData['image'] = $uploadedFileUrl;
         }
-
+    
         // Perbarui buku
         $book->update($validatedData);
-
+    
         // Kembalikan respon JSON
         return response()->json([
             'message' => 'Book updated successfully',
             'book' => $book,
         ]);
-    }
+    }    
 
     /**
      * Remove the specified resource from storage.
