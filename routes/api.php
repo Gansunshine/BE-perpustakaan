@@ -8,6 +8,7 @@ use App\Http\Controllers\API\BookController;
 use App\Http\Controllers\API\BorrowController;
 use App\Http\Controllers\API\ProfileController;
 use App\Http\Controllers\API\RoleController;
+use App\Http\Controllers\API\UploadFileController;
 
 Route::prefix('v1/auth')->group(function () {
     Route::post('/register', [AuthController::class, 'register']);
@@ -50,4 +51,10 @@ Route::prefix('v1')->middleware(['auth:api', 'owner'])->group(function () {
     Route::post('role', [RoleController::class, 'store']);
     Route::put('role/{id}', [RoleController::class, 'update']);
     Route::delete('role/{id}', [RoleController::class, 'destroy']);
+});
+
+
+Route::prefix('v1')->group(function () {
+    Route::post('upload', [UploadFileController::class, 'uploadFile']);
+
 });
