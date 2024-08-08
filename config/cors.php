@@ -15,12 +15,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie', '*'],
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['POST', 'GET', 'DELETE', 'PUT', '*'],
 
-    'allowed_origins' => ['*'],
-    //'allowed_origins' => ['https://pustakadigital.vercel.app'],
+    'allowed_origins' => ['https://pustakadigital.vercel.app'],
 
     'allowed_origins_patterns' => [],
 
