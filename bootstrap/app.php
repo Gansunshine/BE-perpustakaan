@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\CORS;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -17,7 +18,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'auth:api' => \App\Http\Middleware\Authenticate::class,
         ]);
 
-        $middleware->pushMiddleware(CORS::class); // Register Cors middleware
+        $middleware->append(CORS::class);
 
         // $middleware->append(GetUserFromToken::class);
     })
