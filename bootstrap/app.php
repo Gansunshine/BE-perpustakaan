@@ -1,3 +1,9 @@
+<?php
+
+use Illuminate\Foundation\Application;
+use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Foundation\Configuration\Middleware;
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
@@ -9,9 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'owner' => \App\Http\Middleware\CheckOwnerRole::class,
             'auth:api' => \App\Http\Middleware\Authenticate::class,
+            'cors' => \App\Http\Middleware\CORS::class,
         ]);
-
-        $middleware->add(\App\Http\Middleware\CORS::class);
 
         // $middleware->append(GetUserFromToken::class);
     })
