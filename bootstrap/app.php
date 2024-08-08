@@ -15,8 +15,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'owner' => \App\Http\Middleware\CheckOwnerRole::class,
             'auth:api' => \App\Http\Middleware\Authenticate::class,
-            'cors' => \App\Http\Middleware\CORS::class,
         ]);
+
+        $middleware->pushMiddleware(CORS::class); // Register Cors middleware
 
         // $middleware->append(GetUserFromToken::class);
     })
