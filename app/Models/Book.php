@@ -10,7 +10,7 @@ class Book extends Model
 {
     use HasFactory, HasUuids;
 
-    protected $fillable = ['title', 'summary', 'image', 'stok', 'category_id'];
+    protected $fillable = ['title', 'summary', 'image', 'stok', 'category_id', 'cloudinary_public_id'];
 
     public function category()
     {
