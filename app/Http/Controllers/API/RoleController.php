@@ -13,10 +13,9 @@ class RoleController extends Controller
      */
     public function index()
     {
-        // Ambil semua role
-        $role = Role::all();
+        $role = Role::orderBy('created_at', 'desc')->get();
         return response()->json([
-            'message' => 'Tampil data berhasil',
+            'message' => 'Tampil data Role berhasil',
             'data' => $role
         ], 200);
     }

@@ -22,7 +22,7 @@ class BookController extends Controller
     {
         $books = Book::orderBy('created_at', 'desc')->get();
         return response()->json([
-            'message' => 'Tampil data berhasil',
+            'message' => 'Tampil data buku berhasil',
             'data' => $books
         ], 200);
     }

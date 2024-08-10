@@ -14,8 +14,11 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return response()->json($categories);
+        $categories = Category::orderBy('created_at', 'desc')->get();
+        return response()->json([
+            'message' => 'Tampil data category berhasil',
+            'data' => $categories
+        ], 200);
     }
 
     /**
