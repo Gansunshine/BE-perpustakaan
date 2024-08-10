@@ -38,6 +38,7 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v1')->group(function () {
     Route::middleware(['auth:api', 'owner'])->get('borrow', [BorrowController::class, 'index']);
     Route::middleware(['auth:api'])->post('borrow', [BorrowController::class, 'store']);
+    Route::middleware(['auth:api'])->patch('borrow/{id}/return', [BorrowController::class, 'returnBook']);
 
 });
 

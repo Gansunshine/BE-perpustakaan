@@ -67,4 +67,25 @@ class BorrowController extends Controller
             'data' => $borrow
         ], 201);
     }
+
+    public function returnBook(Request $request, $id)
+    {
+        $borrow = Borrow::findOrFail($id);
+
+        // Update return_date ke waktu sekarang dalam zona waktu Asia/Jakarta
+        $borrow->return_date = Carbon::now('Asia/Jakarta');
+        $borrow->save();
+
+        // Update stok buku
+        $book = $borrow->book;
+        $book->increment('stok');
+
+        $borrow->load('book', 'user');
+        $borrow->is_overdue = $borrow->isOverdue();
+
+        return response()->json([
+            'message' => 'Buku berhasil dikembalikan',
+            'data' => $borrow
+        ], 200);
+    }
 }
