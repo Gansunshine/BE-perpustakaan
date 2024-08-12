@@ -11,7 +11,7 @@ class BookController extends Controller
 {
     public function dashboard()
     {
-        $limitBook = Book::orderBy('created_at', 'desc')->take(12)->get();
+        $limitBook = Book::orderBy('created_at', 'desc')->take(10)->get();
         return response()->json([
             'message' => 'Tampil Limit Book berhasil',
             'data' => $limitBook
